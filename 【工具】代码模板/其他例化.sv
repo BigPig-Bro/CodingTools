@@ -1,0 +1,56 @@
+//按键消抖
+wire fuc_state;
+key #(
+	.CLK_FRE	(50   				),
+	.CNT  		(1 					)
+)key_m0(
+	.clk 		(clk 				),
+	.key_in 	(key_fuc 			),
+	.key_cnt	(fuc_state 			)
+	);
+ 
+//串口收发
+uart_top #(
+	.CLK_FRE 	(CLK_FRE	),
+	.UART_RATE 	(UART_RATE	)
+	) uart_top_m0(
+ 	.clk			(clk			),
+ 	
+ 	.uart_tx		(uart_tx		),
+ 	.uart_rx		(uarr_rx		)
+	);
+
+//IIC
+iic_top #(
+	.CLK_FRE 			(CLK_FRE	),
+	.IIC_FRE 			(UART_RATE	),
+	.IIC_SLAVE_ADDR_EX 	(0			),
+	.IIC_SLAVE_REG_EX 	(0			),
+	.IIC_SLAVE_ADDR 	(8'HE8 		)
+	)iic_top_m0(
+ 	.clk			(clk			),
+ 	.rst_n			(rst_n			),	
+
+ 	.iic_scl 		(iic_scl 		),
+ 	.iic_sda 		(iic_sda 		)
+	);
+
+//PWM 生成
+pwm_ctr #(
+	.CLK_FRE 			(CLK_FRE	)
+	)pwm_ctr_m0(
+ 	.clk			(clk			),
+
+	.pwm_duty 		(pwm_duty 		),
+	.pwm_rate 		(pwm_rate 		),
+	.pwm_out 		(pwm_out 		)
+	);
+
+//数码管
+seg_top seg_top_m0(
+	.clk 	 (clk 		),
+
+	.data_in (seg_data 	),
+	.sel 	 (seg_sel 	),
+	.dig 	 (seg_dig 	)
+	);
