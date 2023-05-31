@@ -1,3 +1,12 @@
+wire test_clk;
+clk_test #(
+    .FRE_IN     (50_000_000     ),
+    .FRE_OUT    (50             )
+)clk_test_m0(
+    .clk_in     (clk            ),
+    .clk_out    (test_clk       )  
+);
+
 //按键消抖
 wire fuc_state;
 key #(

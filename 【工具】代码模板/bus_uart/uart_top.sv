@@ -43,7 +43,7 @@ always@(posedge clk)
 		end
 
 		WAIT:// 回环测试发送
-			if(wait_cnt == CLK_FRE * 1000_000 * SEND_FRE)begin 
+			if(wait_cnt == CLK_FRE * 1000_000 / SEND_FRE)begin 
 				wait_cnt <= 0;
 				state <= SEND;
 			end
