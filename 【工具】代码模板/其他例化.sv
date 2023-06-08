@@ -44,6 +44,26 @@ iic_top #(
  	.iic_sda 		(iic_sda 		)
 	);
 
+//SPI 驱动 工作模式0
+spi_master#(
+	.CLK_FRE (CLK_FRE	 	),
+	.SPI_FRE (SPI_FRE 	 	)
+) spi_master_m0(
+	.clk 	  	(clk 			),
+
+	.spi_busy	(spi_busy 		),
+	.spi_start  (spi_start 		),
+	.send_dc  	(send_dc 	 	),
+	.send_data	(send_data 		),
+	.recv_data	(recv_data  	),
+
+	.spi_cs   	(spi_cs   	 	),
+	.spi_dc   	(	   			),
+	.spi_sck  	(spi_sck  		),
+	.spi_miso 	(spi_miso 		),
+	.spi_mosi 	(spi_mosi 		)
+);
+
 //PWM 生成
 pwm_ctr #(
 	.CLK_FRE 			(CLK_FRE	)
