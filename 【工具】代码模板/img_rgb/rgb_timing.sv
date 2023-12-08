@@ -11,16 +11,16 @@ module rgb_timing(
 
 //74.25M
 `ifdef  VIDEO_1280_720
-parameter H_ACTIVE = 16'd1280;           //horizontal active time (pixels)
-parameter H_FP = 16'd110;                //horizontal front porch (pixels)
-parameter H_SYNC = 16'd40;               //horizontal sync time(pixels)
-parameter H_BP = 16'd220;                //horizontal back porch (pixels)
-parameter V_ACTIVE = 16'd720;            //vertical active Time (lines)
-parameter V_FP  = 16'd5;                 //vertical front porch (lines)
-parameter V_SYNC  = 16'd5;               //vertical sync time (lines)
-parameter V_BP  = 16'd20;                //vertical back porch (lines)
-parameter HS_POL = 'b1;                 //horizontal sync polarity, 1 : POSITIVE,0 : NEGATIVE;
-parameter VS_POL = 'b1;                 //vertical sync polarity, 1 : POSITIVE,0 : NEGATIVE;
+parameter H_ACTIVE 	= 16'd1280;           //horizontal active time (pixels)
+parameter H_FP 		= 16'd110;                //horizontal front porch (pixels)
+parameter H_SYNC 	= 16'd40;               //horizontal sync time(pixels)
+parameter H_BP 		= 16'd220;                //horizontal back porch (pixels)
+parameter V_ACTIVE  = 16'd720;            //vertical active Time (lines)
+parameter V_FP   	= 16'd5;                 //vertical front porch (lines)
+parameter V_SYNC  	= 16'd5;               //vertical sync time (lines)
+parameter V_BP   	= 16'd20;                //vertical back porch (lines)
+parameter HS_POL  	= 'b1;                 //horizontal sync polarity, 1 : POSITIVE,0 : NEGATIVE;
+parameter VS_POL  	= 'b1;                 //vertical sync polarity, 1 : POSITIVE,0 : NEGATIVE;
 `endif
 
 //480x272 9Mhz

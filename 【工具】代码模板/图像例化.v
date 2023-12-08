@@ -5,7 +5,7 @@ wire 		rgb_vs,rgb_hs,rgb_de;
 wire [ 9:0] rgb_x,rgb_y;
 rgb_timing rgb_timing_m0(
 	.rgb_clk	(rgb_clk		),	
-	.rgb_rst_n	(rst_n			),	
+	.rst_n		(rst_n			),	
 	.rgb_hs		(rgb_hs			),
 	.rgb_vs		(rgb_vs			),
 	.rgb_de		(rgb_de			),
