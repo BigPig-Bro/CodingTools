@@ -39,7 +39,7 @@ always@(posedge i_sys_clk)begin
         state       <= IDLE;
     end else begin
         case(state)
-            IDLE: // 空闲状态
+            IDLE:begin // 空闲状态
                 if(recv_en)begin // 接收数据
                     send_en     <= 'b1;
                     send_data   <= recv_data;
@@ -52,6 +52,7 @@ always@(posedge i_sys_clk)begin
                 end else begin
                     wait_cnt    <= wait_cnt + 'd1;
                 end
+            end
 
             LOOP:begin // 回环测试
                 if(!send_busy)begin
