@@ -1,7 +1,7 @@
 module uart_top #(
-    parameter CLK_FRE         = 50,
-    parameter UART_RATE       = 115200,
-    parameter SEND_FRE        = 1
+    parameter P_CLK_FRE       = 27_000_000,
+    parameter P_UART_RATE     = 115200,
+    parameter P_SEND_FRE      = 1
     )(
     input         i_sys_clk,    //系统时钟
     input         i_rst_n,     //系统复位
@@ -23,10 +23,10 @@ logic [ 7:0] recv_data;
 logic        recv_en;
 
 //发送寄存器
-parameter     ENG_NUM  = 9;//非中文字符数
-parameter     CHE_NUM  = 2;//  中文字符数
-parameter     DATA_NUM = CHE_NUM * 3 + ENG_NUM; //中文字符使用UTF8，占用3个字节
-logic [ DATA_NUM * 8 - 1:0] char_data = {"你好  World","\r\n"};
+localparam P_ENG_NUM  = 9;  //非中文字符数
+localparam P_CHE_NUM  = 2;  //中文字符数
+localparam P_DATA_NUM = P_CHE_NUM * 3 + P_ENG_NUM;  //中文字符使用UTF8，占用3个字节
+logic [ P_DATA_NUM * 8 - 1:0] char_data = {"你好  World","\r\n"};
     
 //仲裁机制
 always@(posedge i_sys_clk)begin
@@ -45,7 +45,7 @@ always@(posedge i_sys_clk)begin
                     send_data   <= recv_data;
 
                     state       <= LOOP;
-               end else if(wait_cnt >= CLK_FRE * 1000_000 / SEND_FRE)begin 
+               end else if(wait_cnt >= P_CLK_FRE / P_SEND_FRE)begin 
                    wait_cnt    <= 'd0;
 
                    state       <= SEND;
@@ -63,7 +63,7 @@ always@(posedge i_sys_clk)begin
             end
 
             SEND:begin // 主动发送
-                if(send_cnt >= DATA_NUM + 1)begin 
+                if(send_cnt >= P_DATA_NUM + 1)begin 
                     send_en     <= 'b0;
                     send_cnt    <= 'd0;
 
@@ -71,7 +71,7 @@ always@(posedge i_sys_clk)begin
                 end
                 else if(!send_busy)begin
                     send_en     <= 'b1;
-                    send_data   <= char_data[ (DATA_NUM - 1 - send_cnt) * 8 +: 8];
+                    send_data   <= char_data[ (P_DATA_NUM - 1 - send_cnt) * 8 +: 8];
                     send_cnt    <= send_cnt + 'd1;
                 end
             end
@@ -85,8 +85,8 @@ end
 
 //发送模块
 uart_tx #(
-    .CLK_FRE            (CLK_FRE           ),
-    .UART_RATE          (UART_RATE         )
+    .P_CLK_FRE          (P_CLK_FRE         ),
+    .P_UART_RATE        (P_UART_RATE       )
 )uart_tx_m0(
     .i_sys_clk          (i_sys_clk         ),
     .i_rst_n            (i_rst_n           ),
@@ -100,8 +100,8 @@ uart_tx #(
 
 //接收模块
 uart_rx #(
-    .CLK_FRE            (CLK_FRE            ),
-    .UART_RATE          (UART_RATE          )
+    .P_CLK_FRE          (P_CLK_FRE          ),
+    .P_UART_RATE        (P_UART_RATE        )
 )uart_rx_m0(
     .i_sys_clk          (i_sys_clk          ),
     .i_rst_n            (i_rst_n            ),

@@ -1,7 +1,7 @@
 // 数据位 8 停止位 1 无奇偶校验
 module uart_rx#(
-    parameter CLK_FRE       = 50,
-    parameter UART_RATE     = 115200
+    parameter P_CLK_FRE     = 27_000_000,
+    parameter P_UART_RATE   = 115200
 ) (
     input                 i_sys_clk,    //系统时钟
     input                 i_rst_n,     //系统复位
@@ -25,7 +25,7 @@ always@(posedge i_sys_clk)begin
 end
 
 /*******************************  RX MAIN  ****************************************/
-parameter  RATE_CNT = (CLK_FRE * 1000_000 / UART_RATE) - 1;
+localparam P_RATE_CNT = (P_CLK_FRE / P_UART_RATE) - 1;
 
 typedef enum logic [1:0] {RX_WAIT, RX_START, RX_RECV, RX_STOP} STATE_RX;
 STATE_RX state;
@@ -34,7 +34,7 @@ logic [25:0] clk_cnt;
 logic [ 7:0] recv_data_r;
 logic [ 2:0] recv_cnt;
 
-assign o_recv_en = (clk_cnt >= RATE_CNT * 3 / 2);
+assign o_recv_en = (clk_cnt >= P_RATE_CNT * 3 / 2);
 
 always@(posedge i_sys_clk)begin
     if(!i_rst_n)begin
@@ -54,7 +54,7 @@ always@(posedge i_sys_clk)begin
                 end
 
             RX_START:begin 
-                if(clk_cnt >= RATE_CNT / 2)begin 
+                if(clk_cnt >= P_RATE_CNT / 2)begin 
                     clk_cnt     <= 0;
 
                     state       <= RX_RECV;
@@ -64,7 +64,7 @@ always@(posedge i_sys_clk)begin
             end
 
             RX_RECV:begin 
-                if(clk_cnt >= RATE_CNT)begin 
+                if(clk_cnt >= P_RATE_CNT)begin 
                     clk_cnt     <= 0;
                     recv_data_r[recv_cnt] <= i_rx_pin_d1;
                     recv_cnt   <= recv_cnt + 1;
@@ -78,7 +78,7 @@ always@(posedge i_sys_clk)begin
             RX_STOP:begin 
                 o_recv_data <= recv_data_r;
 
-                if(clk_cnt >= RATE_CNT * 3 / 2)begin 
+                if(clk_cnt >= P_RATE_CNT * 3 / 2)begin 
                     clk_cnt     <= 0;
 
                     state       <= RX_WAIT;
