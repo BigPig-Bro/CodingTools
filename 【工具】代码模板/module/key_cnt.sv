@@ -1,15 +1,15 @@
-//按键计数模块：消抖并统计按键按下次数
+//按键计数模块：消抖并统计按键按下次数，计数位宽由P_CNT_MAX自动计算
 //260906    v1.0.0   按coder风格重构：统一i_sys_clk，打拍捕捉上升沿
+//260915    v1.1.0   去掉P_CNT参数，输出位宽由P_CNT_MAX自动计算
 module key_cnt #(
-    parameter P_CLK_FRE  = 50_000_000,  //输入的时钟 Hz
-    parameter P_CNT      = 1,           //计数位宽
-    parameter P_CNT_MAX  = 2           //最大计数值，达到后清零
+    parameter P_CLK_FRE = 50_000_000,  //输入的时钟 Hz
+    parameter P_CNT_MAX = 2           //最大计数值，达到后清零，输出位宽自动计算
 )(
-    input                          i_sys_clk,   //系统时钟
-    input                          i_rst_n,     //系统复位，低有效
-    input                          i_key_in,    //按键输入，按下为低电平
+    input                                          i_sys_clk,   //系统时钟
+    input                                          i_rst_n,     //系统复位，低有效
+    input                                          i_key_in,    //按键输入，按下为低电平
 
-    output logic [P_CNT - 1:0] o_key_cnt        //按键计数输出
+    output logic [$clog2(P_CNT_MAX + 1) - 1:0] o_key_cnt        //按键计数输出，位宽由P_CNT_MAX自动计算
 );
 
 //************ 参数/常量 ************
